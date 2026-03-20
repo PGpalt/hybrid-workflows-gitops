@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: minio
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  project: default
+  source:
+    repoURL: https://charts.min.io/
+    chart: minio
+    targetRevision: 5.4.0
+    helm:
+      releaseName: minio
+      values: |
+        fullnameOverride: minio
+        mode: standalone
+        existingSecret: my-minio-cred
+        persistence:
+          enabled: true
+          size: 10Gi
+        service:
+          type: ClusterIP
+        consoleService:
+          type: ClusterIP
+        buckets:
+          - name: my-bucket
+            policy: none
+            purge: false
+            versioning: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argo
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
