@@ -17,6 +17,13 @@ spec:
         fullnameOverride: minio
         mode: standalone
         existingSecret: my-minio-cred
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            cpu: 500m
+            memory: 1Gi
         persistence:
           enabled: true
           size: 10Gi
