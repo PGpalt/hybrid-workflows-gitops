@@ -14,6 +14,23 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: kubeflow
+  ignoreDifferences:
+  - group: ""
+    kind: Secret
+    name: katib-webhook-cert
+    namespace: kubeflow
+    jsonPointers:
+    - /data
+  - group: admissionregistration.k8s.io
+    kind: MutatingWebhookConfiguration
+    name: katib.kubeflow.org
+    jqPathExpressions:
+    - .webhooks[]?.clientConfig.caBundle
+  - group: admissionregistration.k8s.io
+    kind: ValidatingWebhookConfiguration
+    name: katib.kubeflow.org
+    jqPathExpressions:
+    - .webhooks[]?.clientConfig.caBundle
   syncPolicy:
     automated:
       prune: true
