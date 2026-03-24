@@ -28,9 +28,11 @@ spec:
           enabled: true
           size: 10Gi
         service:
-          type: ClusterIP
+          type: NodePort
+          nodePort: 32000
         consoleService:
-          type: ClusterIP
+          type: NodePort
+          nodePort: 32001
         buckets:
           - name: my-bucket
             policy: none
