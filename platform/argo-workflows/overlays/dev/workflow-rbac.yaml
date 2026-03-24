@@ -1,22 +1,4 @@
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: argo-workflow-controller-cluster-template
-rules:
-- apiGroups: ["argoproj.io"]
-  resources: ["clusterworkflowtemplates"]
-  verbs: ["get", "list", "watch"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: argo-server-cluster-template
-rules:
-- apiGroups: ["argoproj.io"]
-  resources: ["clusterworkflowtemplates"]
-  verbs: ["get", "list", "watch"]
----
-apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: argo-workflow-cluster-template

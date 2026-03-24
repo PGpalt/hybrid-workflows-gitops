@@ -15,7 +15,7 @@ spec:
       releaseName: argo
       values: |
         fullnameOverride: argo
-        singleNamespace: true
+        singleNamespace: false
         workflow:
           serviceAccount:
             create: true
