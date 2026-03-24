@@ -27,6 +27,8 @@ spec:
             spec:
               serviceAccountName: argo-workflow
         server:
+          extraArgs:
+          - --auth-mode=server
           serviceType: NodePort
           serviceNodePort: 32746
         useStaticCredentials: true
