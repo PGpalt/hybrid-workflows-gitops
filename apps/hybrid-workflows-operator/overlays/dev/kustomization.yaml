@@ -2,12 +2,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
 - ../../base
+images:
+- name: ghcr.io/pgpalt/hybrid-workflows-operator
+  newTag: sha-3892b9b9a1b58a5e985e184076cd6d07a7022408
 patches:
-- path: image-patch.yaml
-  target:
-    kind: Deployment
-    name: hybrid-workflows-operator-controller-manager
-    namespace: hybrid-workflows-operator-system
 - path: namespace.yaml
   target:
     kind: Namespace

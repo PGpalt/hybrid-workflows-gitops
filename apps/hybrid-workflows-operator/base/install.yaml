@@ -526,7 +526,7 @@ spec:
         - --health-probe-bind-address=:8081
         command:
         - /manager
-        image: controller:latest
+        image: ghcr.io/pgpalt/hybrid-workflows-operator:main
         livenessProbe:
           httpGet:
             path: /healthz
