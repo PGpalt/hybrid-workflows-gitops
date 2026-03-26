@@ -8,5 +8,5 @@ spec:
     spec:
       containers:
       - name: manager
-        image: ghcr.io/pgpalt/hybrid-workflows-operator:main
+        image: ghcr.io/pgpalt/hybrid-workflows-operator:sha-5e8b08478e20f28c854eda6767b547a1e147068f
         imagePullPolicy: Always
