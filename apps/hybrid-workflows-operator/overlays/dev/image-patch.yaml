@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hybrid-workflows-operator-controller-manager
+  namespace: hybrid-workflows-operator-system
+spec:
+  template:
+    spec:
+      containers:
+      - name: manager
+        image: ghcr.io/pgpalt/hybrid-workflows-operator:main
+        imagePullPolicy: Always

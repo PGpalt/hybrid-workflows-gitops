@@ -1,0 +1,30 @@
+name: Validate GitOps
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v4
+      with:
+        version: v1.35.0
+
+    - name: Render minikube root
+      run: kubectl kustomize clusters/minikube >/tmp/clusters-minikube.yaml
+
+    - name: Render operator overlay
+      run: kubectl kustomize apps/hybrid-workflows-operator/overlays/dev >/tmp/hybrid-workflows-operator.yaml
+
+    - name: Verify expected operator resources are present
+      run: |
+        grep -q 'kind: CustomResourceDefinition' /tmp/hybrid-workflows-operator.yaml
+        grep -q 'name: hybridworkflows.hybridwf.io' /tmp/hybrid-workflows-operator.yaml
+        grep -q 'kind: Deployment' /tmp/hybrid-workflows-operator.yaml
+        grep -q 'name: hybrid-workflows-operator-controller-manager' /tmp/hybrid-workflows-operator.yaml

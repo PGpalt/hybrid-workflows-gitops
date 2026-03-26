@@ -7,3 +7,4 @@ resources:
 - application-katib.yaml
 - application-argo-workflows.yaml
 - application-argo-workflows-addons.yaml
+- application-hybrid-workflows-operator.yaml
