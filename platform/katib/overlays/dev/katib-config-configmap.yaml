@@ -14,6 +14,7 @@ data:
       controller:
         webhookPort: 8443
         trialResources:
+          - HybridWorkflow.v1alpha1.hybridwf.io
           - Workflow.v1alpha1.argoproj.io
           - TrainJob.v1alpha1.trainer.kubeflow.org
           - Job.v1.batch
