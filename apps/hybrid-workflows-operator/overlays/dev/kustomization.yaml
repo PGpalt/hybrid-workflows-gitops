@@ -4,7 +4,7 @@ resources:
 - ../../base
 images:
 - name: ghcr.io/pgpalt/hybrid-workflows-operator
-  newTag: sha-8c415be10e572ae97abc87aa8953495768b689a4
+  newTag: sha-bb733920b0444cd1e61b959d6c59378df1b03e09
 patches:
 - path: namespace.yaml
   target:
