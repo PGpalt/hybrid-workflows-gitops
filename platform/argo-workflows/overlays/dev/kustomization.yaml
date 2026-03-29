@@ -3,4 +3,3 @@ kind: Kustomization
 resources:
 - ui-rbac.yaml
 - workflow-rbac.yaml
-- slurm-job-workflow-template.yaml
