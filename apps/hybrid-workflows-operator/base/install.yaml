@@ -526,7 +526,7 @@ spec:
         - --health-probe-bind-address=:8081
         command:
         - /manager
-        image: ghcr.io/pgpalt/hybrid-workflows-operator:main
+        image: ghcr.io/pgpalt/hybrid-workflows-operator:sha-22c4831974975c29c0c2382a415daa2a5664065c
         livenessProbe:
           httpGet:
             path: /healthz
@@ -562,3 +562,111 @@ spec:
       serviceAccountName: hybrid-workflows-operator-controller-manager
       terminationGracePeriodSeconds: 10
       volumes: []
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+  name: slurm-template
+spec:
+  entrypoint: slurm-submit-job
+  templates:
+  - container:
+      command:
+      - /usr/local/bin/trigger-job.sh
+      env:
+      - name: POD_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: metadata.name
+      - name: SSH_HOST
+        valueFrom:
+          secretKeyRef:
+            key: sshHost
+            name: ssh-connect-info
+      - name: SSH_USER
+        valueFrom:
+          secretKeyRef:
+            key: sshUser
+            name: ssh-connect-info
+      - name: SSH_PORT
+        valueFrom:
+          secretKeyRef:
+            key: sshPort
+            name: ssh-connect-info
+            optional: true
+      - name: COMMAND
+        value: '{{inputs.parameters.command}}'
+      - name: TRANSFER_DATA
+        value: '{{inputs.parameters.s3artifact}}'
+      - name: OUTPUT_FILE_NAME
+        value: '{{inputs.parameters.outputFileName}}'
+      - name: OUTPUT_FILE_PATH
+        value: '{{inputs.parameters.outputFilePath}}'
+      - name: INPUT_FILE_PATH
+        value: '{{inputs.parameters.inputFilePath}}'
+      - name: SLURM_INPUT
+        value: '{{inputs.parameters.slurmInput}}'
+      - name: FETCH_DATA
+        value: '{{inputs.parameters.fetchData}}'
+      - name: CLEAN_DATA
+        value: '{{inputs.parameters.cleanData}}'
+      - name: CLEAN_DATA_PATH
+        value: '{{inputs.parameters.cleanDataPath}}'
+      image: ghcr.io/pgpalt/hybrid-workflows-ssh-client:sha-22c4831974975c29c0c2382a415daa2a5664065c
+      imagePullPolicy: IfNotPresent
+      resources:
+        limits:
+          cpu: 500m
+          memory: 256Mi
+        requests:
+          cpu: 100m
+          memory: 128Mi
+      volumeMounts:
+      - mountPath: /root/.ssh
+        name: ssh-keys
+        readOnly: true
+    inputs:
+      artifacts:
+      - name: input-artifact
+        optional: true
+        path: /tmp/
+        s3:
+          key: '{{inputs.parameters.s3artifact}}'
+      parameters:
+      - name: command
+      - default: NotSet
+        name: s3artifact
+      - default: "false"
+        name: slurmInput
+      - default: "false"
+        name: fetchData
+      - default: "false"
+        name: cleanData
+      - default: NotSet
+        name: cleanDataPath
+      - default: NotSet
+        name: inputFilePath
+      - default: NotSet
+        name: outputFileName
+      - default: slurm-out
+        name: outputFilePath
+    name: slurm-submit-job
+    outputs:
+      artifacts:
+      - archive:
+          none: {}
+        name: output-artifact
+        optional: true
+        path: '{{inputs.parameters.outputFilePath}}/'
+        s3:
+          key: '{{workflow.uid}}/{{pod.name}}'
+    volumes:
+    - name: ssh-keys
+      secret:
+        defaultMode: 384
+        items:
+        - key: ssh-privatekey
+          path: id_rsa
+        secretName: slurm-ssh-key
