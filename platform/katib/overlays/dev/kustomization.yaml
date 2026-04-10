@@ -9,3 +9,8 @@ patches:
     kind: ConfigMap
     name: katib-config
     namespace: kubeflow
+- path: katib-ui-nodeport.yaml
+  target:
+    kind: Service
+    name: katib-ui
+    namespace: kubeflow
