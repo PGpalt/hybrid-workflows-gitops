@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/PGpalt/hybrid-workflows-gitops.git
     targetRevision: main
-    path: apps/hybrid-workflows-operator/overlays/dev
+    path: apps/hybrid-workflows-operator/overlays/minikube
   destination:
     server: https://kubernetes.default.svc
     namespace: hybrid-workflows-operator-system

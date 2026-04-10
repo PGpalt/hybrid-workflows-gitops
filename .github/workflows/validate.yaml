@@ -16,15 +16,29 @@ jobs:
       with:
         version: v1.35.0
 
-    - name: Render minikube root
-      run: kubectl kustomize clusters/minikube >/tmp/clusters-minikube.yaml
+    - name: Render cluster roots
+      run: |
+        kubectl kustomize clusters/minikube >/tmp/clusters-minikube.yaml
+        kubectl kustomize clusters/eks-dev >/tmp/clusters-eks-dev.yaml
+        kubectl kustomize clusters/eks-prod >/tmp/clusters-eks-prod.yaml
 
-    - name: Render operator overlay
-      run: kubectl kustomize apps/hybrid-workflows-operator/overlays/dev >/tmp/hybrid-workflows-operator.yaml
+    - name: Render operator overlays
+      run: |
+        kubectl kustomize apps/hybrid-workflows-operator/overlays/minikube >/tmp/hybrid-workflows-operator-minikube.yaml
+        kubectl kustomize apps/hybrid-workflows-operator/overlays/eks-dev >/tmp/hybrid-workflows-operator-eks-dev.yaml
+        kubectl kustomize apps/hybrid-workflows-operator/overlays/eks-prod >/tmp/hybrid-workflows-operator-eks-prod.yaml
+
+    - name: Render Argo Workflows addon overlays
+      run: |
+        kubectl kustomize platform/argo-workflows/overlays/minikube >/tmp/argo-workflows-addons-minikube.yaml
+        kubectl kustomize platform/argo-workflows/overlays/eks-dev >/tmp/argo-workflows-addons-eks-dev.yaml
+        kubectl kustomize platform/argo-workflows/overlays/eks-prod >/tmp/argo-workflows-addons-eks-prod.yaml
 
     - name: Verify expected operator resources are present
       run: |
-        grep -q 'kind: CustomResourceDefinition' /tmp/hybrid-workflows-operator.yaml
-        grep -q 'name: hybridworkflows.hybridwf.io' /tmp/hybrid-workflows-operator.yaml
-        grep -q 'kind: Deployment' /tmp/hybrid-workflows-operator.yaml
-        grep -q 'name: hybrid-workflows-operator-controller-manager' /tmp/hybrid-workflows-operator.yaml
+        for rendered in /tmp/hybrid-workflows-operator-*.yaml; do
+          grep -q 'kind: CustomResourceDefinition' "$rendered"
+          grep -q 'name: hybridworkflows.hybridwf.io' "$rendered"
+          grep -q 'kind: Deployment' "$rendered"
+          grep -q 'name: hybrid-workflows-operator-controller-manager' "$rendered"
+        done

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hybrid-workflows-operator-system
+  labels:
+    app.kubernetes.io/part-of: hybrid-workflows
+    app.kubernetes.io/component: operator

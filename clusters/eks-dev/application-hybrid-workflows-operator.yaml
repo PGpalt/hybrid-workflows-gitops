@@ -1,29 +1,22 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argo-workflows-addons
+  name: hybrid-workflows-operator
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "4"
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   project: default
   source:
     repoURL: https://github.com/PGpalt/hybrid-workflows-gitops.git
     targetRevision: main
-    path: platform/argo-workflows/overlays/minikube
+    path: apps/hybrid-workflows-operator/overlays/eks-dev
   destination:
     server: https://kubernetes.default.svc
-    namespace: argo
+    namespace: hybrid-workflows-operator-system
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-    retry:
-      limit: 10
-      backoff:
-        duration: 10s
-        factor: 2
-        maxDuration: 3m
     syncOptions:
     - CreateNamespace=true
-    - SkipDryRunOnMissingResource=true
