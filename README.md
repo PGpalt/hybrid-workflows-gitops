@@ -12,6 +12,7 @@ of references in this repo so they point at your own repos and images:
 
 - `repoURL` fields that still reference `https://github.com/PGpalt/hybrid-workflows-gitops.git`
 - operator image names such as `ghcr.io/pgpalt/hybrid-workflows-operator`
+- EKS demo values in `clusters/eks-dev/application-argo-workflows.yaml`, including the S3 region, bucket name, and the Argo service account names expected by the infra-managed EKS Pod Identity associations
 - any other registry or organization-specific image references copied from the original repos
 
 The operator release workflow can promote into a forked GitOps repo, but only if

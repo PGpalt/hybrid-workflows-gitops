@@ -27,6 +27,9 @@ spec:
             spec:
               serviceAccountName: argo-workflow
         server:
+          serviceAccount:
+            create: true
+            name: argo-server
           extraArgs:
           - --auth-mode=server
           serviceType: ClusterIP
@@ -34,7 +37,7 @@ spec:
           archiveLogs: false
           s3:
             bucket: hybrid-workflows-eks-dev-artifacts
-            region: us-east-1
+            region: eu-north-1
             keyFormat: artifacts/{{workflow.name}}/{{pod.name}}
             useSDKCreds: true
   destination:
