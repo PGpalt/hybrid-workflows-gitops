@@ -39,7 +39,7 @@ spec:
             bucket: hybrid-workflows-eks-dev-artifacts
             region: eu-north-1
             keyFormat: artifacts/{{workflow.name}}/{{pod.name}}
-            useSDKCreds: true
+            useSDKCreds: false
   destination:
     server: https://kubernetes.default.svc
     namespace: argo
