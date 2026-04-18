@@ -33,13 +33,14 @@ spec:
           extraArgs:
           - --auth-mode=server
           serviceType: ClusterIP
+        useStaticCredeentials: false
         artifactRepository:
           archiveLogs: false
           s3:
             bucket: hybrid-workflows-eks-dev-artifacts
             region: eu-north-1
             keyFormat: artifacts/{{workflow.name}}/{{pod.name}}
-            useSDKCreds: false
+            useSDKCreds: true
   destination:
     server: https://kubernetes.default.svc
     namespace: argo
