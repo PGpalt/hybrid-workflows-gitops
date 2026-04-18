@@ -39,6 +39,7 @@ spec:
           s3:
             bucket: hybrid-workflows-eks-dev-artifacts
             region: eu-north-1
+            endpoint: s3.eu-north-1.amazonaws.com
             keyFormat: artifacts/{{workflow.name}}/{{pod.name}}
             useSDKCreds: true
   destination:
