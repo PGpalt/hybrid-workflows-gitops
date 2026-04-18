@@ -33,7 +33,7 @@ spec:
           extraArgs:
           - --auth-mode=server
           serviceType: ClusterIP
-        useStaticCredeentials: false
+        useStaticCredentials: false
         artifactRepository:
           archiveLogs: false
           s3:
