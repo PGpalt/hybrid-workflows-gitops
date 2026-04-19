@@ -526,7 +526,7 @@ spec:
         - --health-probe-bind-address=:8081
         command:
         - /manager
-        image: ghcr.io/pgpalt/hybrid-workflows-operator:sha-ecc61067912009cb766bf5111633c376353afe45
+        image: ghcr.io/pgpalt/hybrid-workflows-operator:sha-7165a14f3e7128d8d39ee1429b7a6a7fe124ab2d
         livenessProbe:
           httpGet:
             path: /healthz
@@ -614,7 +614,7 @@ spec:
         value: '{{inputs.parameters.cleanData}}'
       - name: CLEAN_DATA_PATH
         value: '{{inputs.parameters.cleanDataPath}}'
-      image: ghcr.io/pgpalt/hybrid-workflows-ssh-client:sha-ecc61067912009cb766bf5111633c376353afe45
+      image: ghcr.io/pgpalt/hybrid-workflows-ssh-client:sha-7165a14f3e7128d8d39ee1429b7a6a7fe124ab2d
       imagePullPolicy: IfNotPresent
       resources:
         limits:
